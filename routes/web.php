@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ServersRawDataController;
+use App\Http\Controllers\testController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/import', [ServersRawDataController::class, 'import']);
+Route::get('/test', [testController::class, 'test']);

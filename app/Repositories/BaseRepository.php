@@ -16,7 +16,7 @@ abstract class BaseRepository
 
     public function create(array $attributes)
     {
-        $created = $this->model->create($attributes);
+        $created = $this->model->firstOrCreate($attributes);
         return $this->getById($created->id);
     }
 
