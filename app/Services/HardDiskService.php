@@ -16,8 +16,8 @@ class HardDiskService
     public function createHDD($hddData)
     {
         $name = $hddData;
-        $type = preg_replace('/[^a-z]/i', '', explode('B', $name)[1]); //Get HDD type
-        $capacityString = str_replace($type, '', $name); //Get storage in letters
+        $type = $this->getHDDType($hddData); //Get HDD type
+        $capacityString =  strtok($name, 'B').'B'; //Get storage in letters
         $capacity = $this->calculateCapacity($capacityString); //Calculated capacity form the string
         return $this->hardDiskRepository->create(['name' => $name, 'type' => $type, 'capacity' => $capacity]);
     }
@@ -43,6 +43,12 @@ class HardDiskService
             $finalCapacity = $capacity . $byteData;
         }
         return $finalCapacity;
+    }
+
+    private function getHDDType($hddString)
+    {
+        $typeString = preg_split('/[\dx\d]*[G|T]B/', $hddString)[1];
+        return preg_replace('/[^a-z]/i', '', $typeString);
     }
 
 }
