@@ -15,8 +15,8 @@ class LocationService
 
     public function createLocation($locationData)
     {
-        $location = substr($locationData, -6); //Get location name from location string
-        $code = str_replace($location, '', $locationData); //Get the code from location string
+        $code = substr($locationData, -6); //Get the code from location string
+        $location = str_replace($code, '', $locationData); //Get location name from location string
         return $this->locationRepository->create(['name' => $locationData, 'location' => $location, 'code' => $code]);
     }
 }
