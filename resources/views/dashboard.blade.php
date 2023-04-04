@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servers</title>
     @vite('resources/css/app.css')
-</head>
+    @vite('resources/js/app.js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
+    <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.css">
+    <style>
+        .noUi-connect {
+            background: #376cee;
+        }
+
+        .noUi-target {
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        .noUi-connects {
+            background: #7b99e1;
+        }
+    </style>
+  </head>
 <body>
+
 <section class="bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
         <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
@@ -57,9 +79,17 @@
                 Storage
             </label>
             <div class="relative">
-                <div class="multi-range"></div>
-
-                <h2><span class="from"></span> - <span class="to"></span></h2>
+                <div class="row text-center m-2">
+                    <div id="slider"></div>
+                </div>
+            <div class="row text-center mt-2">
+                <div class="col-6">
+                    <p>From: <b><span id="min"></span></b></p>
+                </div>
+                <div class="col-6">
+                    <p>To: <b><span id="max"></span></b></p>
+                </div>
+            </div>
             </div>
         </div>
         <div class="px-6">
@@ -175,4 +205,31 @@
     </div>
 </section>
 </body>
+<script type="application/javascript">
+
+        const storages = ['0', '250GB', '500GB', '1TB', '2TB', '3TB', '4TB', '8TB', '12TB', '24TB', '48TB', '72TB'];
+        let slider = document.getElementById("slider");
+
+        noUiSlider.create(slider, {
+            start: [0, 11],
+            connect: true,
+            step: 1,
+            range: {
+                min: 0,
+                max: 11
+            }
+        });
+
+        let min_element = document.getElementById("min");
+        let max_element = document.getElementById("max");
+
+
+        slider.noUiSlider.on("update", function (values, handle) {
+            let slider_values = slider.noUiSlider.get();
+            min_element.innerHTML = storages[parseInt(slider_values[0])];
+            max_element.innerHTML = storages[parseInt(slider_values[1])];
+
+        });
+
+</script>
 </html>

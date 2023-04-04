@@ -32,7 +32,7 @@ class ServerController extends Controller
         $locations = $this->locationService->getAllLocations();
         $types = $this->hardDiskService->getHDDTypes();
         $servers = $this->filterServers($request);
-        return view('welcome', compact('servers','locations','types'));
+        return view('dashboard', compact('servers','locations','types'));
 
     }
 

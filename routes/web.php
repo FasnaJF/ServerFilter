@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/server');
 });
 Route::get('/test', [testController::class, 'test']);
 Route::get('/server', [ServerController::class, 'index']);
