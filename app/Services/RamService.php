@@ -16,10 +16,14 @@ class RamService
     public function createRam($ramData)
     {
         $splitData = explode('GB', $ramData);
-        $capacity = $splitData[0].'GB'; //Get capacity of RAM
+        $capacity = $splitData[0] . 'GB'; //Get capacity of RAM
         $type = $splitData[1]; //Get type of RAM
         $name = $ramData;
-        return $this->ramRepository->create(['name'=>$name, 'type' => $type, 'capacity' => $capacity]);
+        return $this->ramRepository->create(['name' => $name, 'type' => $type, 'capacity' => $capacity]);
     }
 
+    public function getRamByStorage($storages)
+    {
+        return $this->ramRepository->getByStorages($storages);
+    }
 }

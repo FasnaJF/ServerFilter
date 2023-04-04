@@ -11,4 +11,14 @@ class LocationRepository extends BaseRepository implements LocationRepositoryInt
     {
         $this->model = $location;
     }
+
+    public function getByName($location)
+    {
+        return $this->model->where('location',$location)->pluck('id');
+    }
+
+    public function getAllLocationNames()
+    {
+        return $this->model->select(['id','location'])->get();
+    }
 }

@@ -11,4 +11,9 @@ class RamRepository extends BaseRepository implements RamRepositoryInterface
     {
         $this->model = $ram;
     }
+
+    public function getByStorages($storages)
+    {
+        return $this->model->whereIn('capacity',$storages)->pluck('id');
+    }
 }

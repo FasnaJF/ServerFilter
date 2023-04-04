@@ -10,4 +10,9 @@ class Model extends EloModel
     use HasFactory;
 
     protected $guarded = [];
+
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class);
+    }
 }

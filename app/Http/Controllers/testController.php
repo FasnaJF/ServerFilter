@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ServersRawDataRepository\ServersRawDataRepository;
+use App\Models\Server;
 use App\Services\ProcessDataService;
-use Illuminate\Http\Request;
 
 class testController extends Controller
 {
@@ -14,7 +13,17 @@ class testController extends Controller
     {
         $this->processDataService = $processDataService;
     }
-    public function test(){
+
+    public function test()
+    {
         $this->processDataService->formatRawData();
+    }
+
+    public function server()
+    {
+        $server = Server::where('location_id',7)->with('location')->get();
+
+        return response()->json($server);
+//        return response()->json($server->hard_disk);
     }
 }

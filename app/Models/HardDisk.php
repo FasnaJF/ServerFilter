@@ -11,4 +11,8 @@ class HardDisk extends Model
 
     protected $guarded = [];
 
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class);
+    }
 }

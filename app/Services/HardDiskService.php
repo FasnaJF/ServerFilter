@@ -17,9 +17,18 @@ class HardDiskService
     {
         $name = $hddData;
         $type = $this->getHDDType($hddData); //Get HDD type
-        $capacityString =  strtok($name, 'B').'B'; //Get storage in letters
+        $capacityString = strtok($name, 'B') . 'B'; //Get storage in letters
         $capacity = $this->calculateCapacity($capacityString); //Calculated capacity form the string
-        return $this->hardDiskRepository->create(['name' => $name, 'type' => $type, 'capacity' => $capacity]);
+        $storage = $this->getStorageValue($capacity); //Calculated storage form the string
+        return $this->hardDiskRepository->create(
+            ['name' => $name, 'type' => $type, 'capacity' => $capacity, 'storage' => $storage]
+        );
+    }
+
+    private function getHDDType($hddString)
+    {
+        $typeString = preg_split('/[\dx\d]*[G|T]B/', $hddString)[1];
+        return preg_replace('/[^a-z]/i', '', $typeString);
     }
 
     private function calculateCapacity($capacityString)
@@ -45,10 +54,28 @@ class HardDiskService
         return $finalCapacity;
     }
 
-    private function getHDDType($hddString)
+    private function getStorageValue($capacity)
     {
-        $typeString = preg_split('/[\dx\d]*[G|T]B/', $hddString)[1];
-        return preg_replace('/[^a-z]/i', '', $typeString);
+        $storageType = substr($capacity, -2);
+        if ($storageType == 'GB') {
+            return intval($capacity);
+        } else {
+            return intval($capacity) * 1000;
+        }
     }
 
+    public function getHardDisksByStorage($fromCapacity, $toCapacity)
+    {
+        return $this->hardDiskRepository->whereBetween($fromCapacity, $toCapacity);
+    }
+
+    public function getHardDisksByType($hddType)
+    {
+        return $this->hardDiskRepository->getByType($hddType);
+    }
+
+    public function getHDDTypes()
+    {
+        return $this->hardDiskRepository->getDistinctHDDTypes();
+    }
 }

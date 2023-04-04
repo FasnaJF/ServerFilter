@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('capacity');
+            $table->bigInteger('storage');
             $table->timestamps();
             $table->softDeletes();
         });

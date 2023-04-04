@@ -6,5 +6,7 @@ use App\Repositories\BaseRepositoryInterface;
 
 interface LocationRepositoryInterface extends BaseRepositoryInterface
 {
+    public function getByName($location);
 
+    public function getAllLocationNames();
 }
