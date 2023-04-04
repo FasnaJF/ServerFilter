@@ -3,27 +3,27 @@
 namespace App\Console\Commands;
 
 use App\Imports\ServersRawDataImport;
+use App\Services\ProcessDataService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Excel;
 
 class ProcessExcelFile extends Command
 {
     protected $signature = 'app:process-excel-file';
-
     protected $description = 'Import raw data to database';
+
+    private ProcessDataService $processDataService;
+
+    public function __construct(ProcessDataService $processDataService)
+    {
+        $this->processDataService = $processDataService;
+        parent::__construct();
+    }
 
     public function handle(): string
     {
-        $fail_count = 0;
-        $import = new ServersRawDataImport();
-        $import->import(public_path('servers.xlsx'));
-
-        foreach ($import->failures() as $failure) {
-            $fail_count ++;
-            Log::info($failure);
-        }
-        Log::info('Number of row(s) failed for servers import is: '.$fail_count);
-
+        (new ServersRawDataImport())->import('servers.xlsx', null, Excel::XLSX); //Read the excel file to db
+        $this->processDataService->formatRawData(); //format the db data to accessible data for filtering
         return 'done';
     }
 }

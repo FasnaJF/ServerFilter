@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+
+  web:
+    build:
+      context: ./
+      dockerfile: web.docker
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8081:80"
+    links:
+      - app
+
+  app:
+    build:
+      context: ./
+      dockerfile: app.docker
+    volumes:
+      - ./:/var/www
+    links:
+      - database
+    environment:
+      - "DB_PORT=3306"
+
+  database:
+    image: mysql:8.0
+    container_name: database_lw_servers
+    restart: unless-stopped
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_USER=root"
+      - "MYSQL_ROOT_PASSWORD=password"
+      - "MYSQL_DATABASE=lw_servers"
+      - "MYSQL_DB_HOST=database"
+    ports:
+      - "33068:3306"
+
+  mysql_test:
+    image: mysql:8.0
+    container_name: database_lw_servers_test
+    restart: unless-stopped
+    environment:
+      - "MYSQL_ROOT_USER=root"
+      - "MYSQL_ROOT_PASSWORD=password"
+      - "MYSQL_DATABASE=lw_servers"
+      - "MYSQL_DB_HOST=database"
+    ports:
+      - "33069:3306"
