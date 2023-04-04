@@ -59,7 +59,7 @@
             <div class="relative">
                 <div class="multi-range"></div>
 
-                <h2><span class="start-hour"></span> - <span class="end-hour"></span></h2>
+                <h2><span class="from"></span> - <span class="to"></span></h2>
             </div>
         </div>
         <div class="px-6">
