@@ -4,25 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\ServersRawData;
 use App\Services\HardDiskService;
-use Database\Seeders\ServersRawDataSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\StubRawData;
-use Tests\TestCase;
+use Tests\RawData;
 
-class HardDiskTest extends TestCase
+class HardDiskTest extends RawData
 {
-    use StubRawData;
-    use RefreshDatabase;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(ServersRawDataSeeder::class);
-    }
 
     public function test_hdd_capacity_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::where('hdd_data', '2x2TBSATA2')->first();;
         $hddService = resolve(HardDiskService::class);
         $hdd = $hddService->createHDD($serverData->hdd_data);
         self::assertEquals('4TB', $hdd->capacity);
@@ -46,7 +35,7 @@ class HardDiskTest extends TestCase
 
     public function test_hdd_type_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::where('hdd_data', '2x2TBSATA2')->first();;
         $hddService = resolve(HardDiskService::class);
         $hdd = $hddService->createhdd($serverData->hdd_data);
         self::assertEquals('SATA', $hdd->type);
@@ -54,7 +43,7 @@ class HardDiskTest extends TestCase
 
     public function test_hdd_data_added_to_db()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();;
         $hddService = resolve(HardDiskService::class);
         $hdd = $hddService->createhdd($serverData->hdd_data);
         self::assertEquals($serverData->hdd_data, $hdd->name);

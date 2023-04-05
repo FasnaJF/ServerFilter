@@ -2,28 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Models\HardDisk;
 use App\Models\ServersRawData;
 use App\Services\HardDiskService;
 use App\Services\LocationService;
 use App\Services\ModelService;
 use App\Services\RamService;
 use App\Services\ServerService;
-use Database\Seeders\ServersRawDataSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\StubRawData;
-use Tests\TestCase;
+use Tests\RawData;
 
-class ServerTest extends TestCase
+class ServerTest extends RawData
 {
-//    use StubRawData;
-    use RefreshDatabase;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(ServersRawDataSeeder::class);
-    }
-
     public function test_server_data_added_to_db()
     {
         $serverData = ServersRawData::first();
@@ -49,5 +38,82 @@ class ServerTest extends TestCase
         self::assertEquals($ram->id, $server->ram_id);
         self::assertEquals($hdd->id, $server->hdd_id);
         self::assertEquals($location->id, $server->location_id);
+    }
+
+    public function test_server_can_be_filtered_by_hdd_type()
+    {
+        $response = $this->post('/api/servers/', ['type' => 'SATA']);
+        ($response->assertJsonCount(3));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_hdd_capacity()
+    {
+        $response = $this->post('/api/servers/', ['capacity' => [0,'2TB']]);
+        ($response->assertJsonCount(5));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_hdd_capacity_and_type_sata()
+    {
+        $response = $this->post('/api/servers/', ['capacity' => [0,'2TB'],'type' => 'SATA']);
+        ($response->assertJsonCount(2));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_hdd_capacity_and_type_ssd()
+    {
+        $response = $this->post('/api/servers/', ['capacity' => [0,'2TB'],'type' => 'SSD']);
+        ($response->assertJsonCount(3));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_location()
+    {
+        $response = $this->post('/api/servers/', ['location' => 'Singapore']);
+        ($response->assertJsonCount(1));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_location_and_hdd_type_ssd()
+    {
+        $response = $this->post('/api/servers/', ['location' => 'Singapore', 'type'=>'SSD']);
+        ($response->assertJsonCount(0));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_location_and_hdd_type_sata()
+    {
+        $response = $this->post('/api/servers/', ['location' => 'Singapore', 'type'=>'SATA']);
+        ($response->assertJsonCount(1));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_location_and_hdd_capacity()
+    {
+        $response = $this->post('/api/servers/', ['location' => 'Singapore', 'capacity' => [0,'2TB']]);
+        ($response->assertJsonCount(1));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_ram_storage()
+    {
+        $response = $this->post('/api/servers/', ['storage' => ['32GB']]);
+        ($response->assertJsonCount(3));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_ram_storage_and_location()
+    {
+        $response = $this->post('/api/servers/', ['storage' => ['32GB'],'location'=>'Singapore']);
+        ($response->assertJsonCount(1));
+        $response->assertStatus(200);
+    }
+
+    public function test_server_can_be_filtered_by_ram_storages_and_location()
+    {
+        $response = $this->post('/api/servers/', ['storage' => ['32GB','16GB'],'location'=>'Hong Kong']);
+        ($response->assertJsonCount(1));
+        $response->assertStatus(200);
     }
 }

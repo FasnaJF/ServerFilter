@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Models\ServersRawData;
 use App\Services\RamService;
-use Tests\StubRawData;
-use Tests\TestCase;
+use Tests\RawData;
 
-class RamTest extends TestCase
+class RamTest extends RawData
 {
-    use StubRawData;
 
 
     public function test_ram_storage_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $ramService = resolve(RamService::class);
         $ram = $ramService->createRam($serverData->ram_data);
         self::assertEquals('16GB',$ram->capacity);
@@ -21,7 +20,7 @@ class RamTest extends TestCase
 
     public function test_ram_type_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $ramService = resolve(RamService::class);
         $ram = $ramService->createRam($serverData->ram_data);
         self::assertEquals('DDR3',$ram->type);
@@ -29,7 +28,7 @@ class RamTest extends TestCase
 
     public function test_ram_data_added_to_db()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $ramService = resolve(RamService::class);
         $ram = $ramService->createRam($serverData->ram_data);
         self::assertEquals($serverData->ram_data,$ram->name);

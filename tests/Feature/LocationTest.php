@@ -2,17 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\ServersRawData;
 use App\Services\LocationService;
-use Tests\StubRawData;
-use Tests\TestCase;
+use Tests\RawData;
 
-class LocationTest extends TestCase
+class LocationTest extends RawData
 {
-    use StubRawData;
 
     public function test_location_name_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $locationService = resolve(LocationService::class);
         $location =  $locationService->createlocation($serverData->location_data);
         self::assertEquals('Amsterdam', $location->location);
@@ -20,7 +19,7 @@ class LocationTest extends TestCase
 
     public function test_location_code_extracted()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $locationService = resolve(LocationService::class);
         $location =  $locationService->createlocation($serverData->location_data);
         self::assertEquals('AMS-01', $location->code);
@@ -28,7 +27,7 @@ class LocationTest extends TestCase
 
     public function test_location_data_added_to_db()
     {
-        $serverData = $this->createStubServerData();
+        $serverData = ServersRawData::first();
         $locationService = resolve(LocationService::class);
         $location =  $locationService->createlocation($serverData->location_data);
         self::assertEquals($serverData->location_data, $location->name);

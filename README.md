@@ -6,14 +6,18 @@ How To Set up Server Filter API Project
 
    `docker-compose up -d --build`
 
-3. Run following command to run migration and import data
+3. Run following command to run migration and import data in the same directory
 
    `bash setup.sh`
 
-4. Postman Documentation for the API is available at the following URL
+4. Run following command to start the front-end in root of the project directory
+
+   `npm run dev`
+
+5. Postman Documentation for the API is available at the following URL
 
    https://documenter.getpostman.com/view/8020564/2s93RXsW5E
 
-5. To run the test cases, run the following command
+6. To run the test cases, run the following command in root of the project directory
 
    `bash test.sh`
