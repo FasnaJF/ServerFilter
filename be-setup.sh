@@ -4,12 +4,8 @@ php artisan key:generate
 
 php artisan config:cache
 
-php artisan migrate
+php artisan migrate --force
 
 php artisan storage:link
 
-php artisan serve
-
-php artisan app:process-excel-file
-
-php artisan queue:work
+php artisan serve --port=8080
