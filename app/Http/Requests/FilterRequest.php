@@ -58,4 +58,15 @@ class FilterRequest extends FormRequest
             'location' => 'sometimes|exists:locations,location',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'capacity' => 'Capacity field should have two entries(for the range)',
+            'capacity.*' => 'Choose a capacity from the given values',
+            'storage.*' => 'Choose a storage from the given values',
+            'location' => 'Choose a location from the list',
+            'type' => 'Choose a HDD type from the list',
+        ];
+    }
 }
