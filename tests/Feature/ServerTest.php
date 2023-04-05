@@ -15,7 +15,7 @@ use Tests\TestCase;
 
 class ServerTest extends TestCase
 {
-    use StubRawData;
+//    use StubRawData;
     use RefreshDatabase;
 
     public function setUp(): void

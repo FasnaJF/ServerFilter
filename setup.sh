@@ -1,5 +1,3 @@
-
-
 docker exec -ti serverfilter_app_1 chmod -R 777 /var/www/storage
 
 docker exec -ti serverfilter_app_1 composer install

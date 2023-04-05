@@ -34,7 +34,7 @@ class ServerRepository extends BaseRepository implements ServerRepositoryInterfa
             'ram:id,name',
             'location:id,name',
             'model:id,name'
-        )->paginate(50);
+        )->get();
     }
 
     public function getAll($sortBy = null)
@@ -44,7 +44,7 @@ class ServerRepository extends BaseRepository implements ServerRepositoryInterfa
             'ram:id,name',
             'location:id,name',
             'model:id,name'
-        )->paginate(50);
+        )->get();
     }
 
 }

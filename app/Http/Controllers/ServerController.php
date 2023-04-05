@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
+use App\Http\Resources\ServerResource;
 use App\Services\HardDiskService;
 use App\Services\LocationService;
 use App\Services\RamService;
@@ -49,44 +50,46 @@ class ServerController extends Controller
         }
         if ($capacity) {
             $hddMatchingServerIds = $this->getServerByStorage($capacity);
-            if ($hddMatchingServerIds) {
+//            if ($hddMatchingServerIds) {
                 $serverIds = $hddMatchingServerIds;
                 $serverIdsUpdated = true;
-            }
+//            }
         }
         if ($hddType) {
             $typeMatchingServerIds = $this->getServerByHDDType($hddType);
-            if ($typeMatchingServerIds) {
+//            if ($typeMatchingServerIds) {
                 if ($serverIds || $serverIdsUpdated) {
                     $serverIds = array_intersect($serverIds, $typeMatchingServerIds);
                     $serverIdsUpdated = true;
                 } else {
                     $serverIds = $typeMatchingServerIds;
                 }
-            }
+//            }
         }
         if ($storages) {
             $ramMatchingServerIds = $this->getServerByRAM($storages);
-            if ($ramMatchingServerIds) {
+//            if ($ramMatchingServerIds) {
                 if ($serverIds || $serverIdsUpdated) {
                     $serverIds = array_intersect($serverIds, $ramMatchingServerIds);
                     $serverIdsUpdated = true;
                 } else {
                     $serverIds = $ramMatchingServerIds;
                 }
-            }
+//            }
         }
         if ($location) {
             $locationMatchingServerIds = $this->getServerByLocation($location);
-            if ($locationMatchingServerIds) {
+//            if ($locationMatchingServerIds) {
                 if ($serverIds || $serverIdsUpdated) {
                     $serverIds = array_intersect($serverIds, $locationMatchingServerIds);
                 } else {
                     $serverIds = $locationMatchingServerIds;
                 }
-            }
+//            }
         }
-        return $this->serverService->getServersById($serverIds);
+//        return $this->serverService->getServersById($serverIds);
+        return ServerResource::collection($this->serverService->getServersById($serverIds));
+
     }
 
     protected function getAllServers()
