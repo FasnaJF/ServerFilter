@@ -1,5 +1,5 @@
-docker exec -ti serverfilter_app_1 php artisan config:cache --env=testing
+php artisan config:cache --env=testing
 
-docker exec -ti serverfilter_app_1 php artisan migrate --env=testing
+php artisan migrate --env=testing
 
-docker exec -ti serverfilter_app_1 php artisan test
+php artisan test
