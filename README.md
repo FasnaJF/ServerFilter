@@ -4,7 +4,7 @@ How To Set up Server Filter API Project
 
    add the credentials on .env.testing as well
 
-2. Run the following in root of the project directory to setup back-end
+2. Run the following in root of the project directory to set up back-end
 
    `bash be-setup.sh`
 
@@ -12,7 +12,7 @@ How To Set up Server Filter API Project
 
    `bash data-setup.sh`
 
-   wait for this command executed and finished, start the queue by entering the follwoing command
+   wait for this command executed and finished, start the queue by entering the following command
 
    `php artisan queue:work`
 
