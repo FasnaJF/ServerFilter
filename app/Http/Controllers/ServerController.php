@@ -33,8 +33,7 @@ class ServerController extends Controller
         $locations = $this->locationService->getAllLocations();
         $types = $this->hardDiskService->getHDDTypes();
         $servers = $this->filterServers($request);
-        return view('dashboard', compact('servers','locations','types'));
-
+        return view('dashboard', compact('servers', 'locations', 'types'));
     }
 
     public function filterServers(FilterRequest $request)
@@ -45,51 +44,41 @@ class ServerController extends Controller
         $hddType = $request->input('type');
         $storages = $request->input('storage');
         $location = $request->input('location');
-        if(!$capacity && !$hddType && !$storages && !$location){
+        if (!$capacity && !$hddType && !$storages && !$location) {
             return $this->getAllServers();
         }
         if ($capacity) {
             $hddMatchingServerIds = $this->getServerByStorage($capacity);
-//            if ($hddMatchingServerIds) {
-                $serverIds = $hddMatchingServerIds;
-                $serverIdsUpdated = true;
-//            }
+            $serverIds = $hddMatchingServerIds;
+            $serverIdsUpdated = true;
         }
         if ($hddType) {
             $typeMatchingServerIds = $this->getServerByHDDType($hddType);
-//            if ($typeMatchingServerIds) {
-                if ($serverIds || $serverIdsUpdated) {
-                    $serverIds = array_intersect($serverIds, $typeMatchingServerIds);
-                    $serverIdsUpdated = true;
-                } else {
-                    $serverIds = $typeMatchingServerIds;
-                }
-//            }
+            if ($serverIds || $serverIdsUpdated) {
+                $serverIds = array_intersect($serverIds, $typeMatchingServerIds);
+                $serverIdsUpdated = true;
+            } else {
+                $serverIds = $typeMatchingServerIds;
+            }
         }
         if ($storages) {
             $ramMatchingServerIds = $this->getServerByRAM($storages);
-//            if ($ramMatchingServerIds) {
-                if ($serverIds || $serverIdsUpdated) {
-                    $serverIds = array_intersect($serverIds, $ramMatchingServerIds);
-                    $serverIdsUpdated = true;
-                } else {
-                    $serverIds = $ramMatchingServerIds;
-                }
-//            }
+            if ($serverIds || $serverIdsUpdated) {
+                $serverIds = array_intersect($serverIds, $ramMatchingServerIds);
+                $serverIdsUpdated = true;
+            } else {
+                $serverIds = $ramMatchingServerIds;
+            }
         }
         if ($location) {
             $locationMatchingServerIds = $this->getServerByLocation($location);
-//            if ($locationMatchingServerIds) {
-                if ($serverIds || $serverIdsUpdated) {
-                    $serverIds = array_intersect($serverIds, $locationMatchingServerIds);
-                } else {
-                    $serverIds = $locationMatchingServerIds;
-                }
-//            }
+            if ($serverIds || $serverIdsUpdated) {
+                $serverIds = array_intersect($serverIds, $locationMatchingServerIds);
+            } else {
+                $serverIds = $locationMatchingServerIds;
+            }
         }
-//        return $this->serverService->getServersById($serverIds);
         return ServerResource::collection($this->serverService->getServersById($serverIds));
-
     }
 
     protected function getAllServers()
