@@ -22,8 +22,14 @@ class ProcessExcelFile extends Command
 
     public function handle(): string
     {
-        (new ServersRawDataImport())->import('servers.xlsx', null, Excel::XLSX); //Read the excel file to db
-        $this->processDataService->formatRawData(); //format the db data to accessible data for filtering
+        $processed = (new ServersRawDataImport())->import(
+            'servers.xlsx',
+            null,
+            Excel::XLSX
+        ); //Read the Excel file to db
+        if ($processed) {
+            $this->processDataService->formatRawData();
+        } //format the db data to accessible data for filtering
         return 'done';
     }
 }
